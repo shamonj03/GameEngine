@@ -75,7 +75,7 @@ public class HSL implements Color {
 	public static float[] unpackHSL(int RGB) {
 		float[] hslArray = new float[3];
 
-		if (RGB == RGB16BitInteger.BLACK || RGB == RGB16BitInteger.BLACK_2  || RGB == RGB16BitInteger.BLACK_3) {
+		if (RGB == RGB16BitInteger.BLACK) {
 			hslArray[0] = 0;
 			hslArray[1] = 0;
 			hslArray[2] = 0;
@@ -150,7 +150,7 @@ public class HSL implements Color {
 	 */
 	public static int offsetHSL(int RGB, float hueOffset,
 			float saturationOffset, float lightingOffset) {
-		if (RGB != RGB16BitInteger.BLACK && RGB != RGB16BitInteger.BLACK_2 && RGB != RGB16BitInteger.BLACK_3) {
+		if (RGB != RGB16BitInteger.BLACK) {
 			float[] hsl = unpackHSL(RGB);
 			/*
 			 * Offset lighting.

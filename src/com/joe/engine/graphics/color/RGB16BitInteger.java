@@ -21,8 +21,6 @@ public class RGB16BitInteger implements Color {
 	public static final int SILVER = 0xC0C0C0;
 	public static final int GRAY = 0x808080;
 	public static final int BLACK = 0x000000;
-	public static final int BLACK_2 = -16777216;
-	public static final int BLACK_3 = 0;
 	public static final int RED = 0xFF0000;
 	public static final int MAROON = 0x800000;
 	public static final int YELLOW = 0xFFFF00;
@@ -89,7 +87,7 @@ public class RGB16BitInteger implements Color {
 	 */
 	public static int offsetRGB(int RGB, int redOffset, int greenOffset,
 			int blueOffset) {
-		if (RGB != BLACK && RGB != BLACK_2 && RGB != BLACK_3) {
+		if (RGB != BLACK) {
 			int[] rgbArray = unpackRGB(RGB);
 
 			/*

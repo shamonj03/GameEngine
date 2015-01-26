@@ -32,7 +32,7 @@ public abstract class Renderable {
 		this.emptyScreen = new int[width * height];
 		
 		for(int i = 0; i < this.pixels.length; i++) {
-			this.emptyScreen[i] = 0;
+			this.emptyScreen[i] = RGB16BitInteger.BLACK;
 		}
 	}
 
@@ -61,7 +61,7 @@ public abstract class Renderable {
 	 * black.
 	 */
 	public void clear() {
-	    System.arraycopy(emptyScreen,0, this.pixels, 0, this.pixels.length);
+	    System.arraycopy(emptyScreen, 0, this.pixels, 0, this.pixels.length);
 	}
 
 	/**
