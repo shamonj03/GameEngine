@@ -13,6 +13,21 @@ public abstract class Definition<T extends Data> {
 	 * @Value Definition data
 	 */
 	private HashMap<Integer, T> data = new HashMap<Integer, T>();
+	
+	
+	/**
+	 * Create a new definition.
+	 * 
+	 * @param path
+	 * 	The location to the definition data.
+	 */
+	public Definition(String path) {
+		try {
+			load(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Parsing information from the file is handled here.
@@ -27,9 +42,10 @@ public abstract class Definition<T extends Data> {
 	 * 
 	 * @param path
 	 *            The path to the definition folder.
+	 * @throws IOException 
 	 */
 	public abstract void load(String path) throws IOException;
-
+	
 	/**
 	 * Gets the generic list of definitions stored in list.
 	 * 
@@ -41,6 +57,18 @@ public abstract class Definition<T extends Data> {
 	 */
 	public HashMap<Integer, T> getData() {
 		return data;
+	}
+	
+	/**
+	 * Set the value for id.
+	 * 
+	 * @param id
+	 * 		Id to be stored in definition.
+	 * @param value
+	 * 		Any information pertaining to that id.
+	 */
+	public void set(Integer id, T value) {
+		data.put(id, value);
 	}
 
 	/**

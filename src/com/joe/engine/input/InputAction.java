@@ -7,9 +7,9 @@ public abstract class InputAction<T extends InputEvent> {
 	/**
 	 * Perform the action created by this object.
 	 * 
-	 * @param inputEvent
+	 * @param event
 	 * 		Type of input event.
 	 */
-	public abstract void actionPerformed(T inputEvent);
+	public abstract void actionPerformed(T event);
 
 }
