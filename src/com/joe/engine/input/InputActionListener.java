@@ -1,9 +1,9 @@
 package com.joe.engine.input;
 
-import java.awt.event.InputEvent;
+import java.awt.event.ComponentEvent;
 import java.util.HashMap;
 
-public class InputActionListener<T extends InputEvent> {
+public class InputActionListener<T extends ComponentEvent> {
 
 	/**
 	 * The actions registered to this listener.

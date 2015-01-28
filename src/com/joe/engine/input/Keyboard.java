@@ -1,23 +1,23 @@
 package com.joe.engine.input;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Keyboard extends KeyAdapter {
+public class Keyboard implements KeyListener {
 	/**
 	 * Create a listener for key type actions.
 	 */
-	private static InputActionListener<KeyEvent> typedActions = new InputActionListener<>("Typed Action");
+	private static InputActionListener<KeyEvent> typedActions = new InputActionListener<>("Keyboard Typed Action");
 
 	/**
 	 * Create a listener for key pressed actions.
 	 */
-	private static InputActionListener<KeyEvent> pressedActions = new InputActionListener<>("Pressed Action");
+	private static InputActionListener<KeyEvent> pressedActions = new InputActionListener<>("Keyboard Pressed Action");
 	
 	/**
 	 * Create a listener for key released actions.
 	 */
-	private static InputActionListener<KeyEvent> releasedActions = new InputActionListener<>("Released Action");
+	private static InputActionListener<KeyEvent> releasedActions = new InputActionListener<>("Keyboard Released Action");
 
 	/*
 	 * (non-Javadoc)

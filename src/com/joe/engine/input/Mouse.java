@@ -1,39 +1,52 @@
 package com.joe.engine.input;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-public class Mouse extends MouseAdapter {
+public class Mouse implements MouseListener, MouseMotionListener {
 	/**
 	 * Create a listener for mouse clicked actions.
 	 */
 	private static InputActionListener<MouseEvent> clickedActions = new InputActionListener<>(
-			"Clicked Action");
+			"Mouse Clicked Action");
 	
 	/**
 	 * Create a listener for mouse pressed actions.
 	 */
 	private static InputActionListener<MouseEvent> pressedActions = new InputActionListener<>(
-			"Pressed Action");
+			"Mouse Pressed Action");
 	
 	/**
 	 * Create a listener for mouse dragged actions.
 	 */
 	private static InputActionListener<MouseEvent> draggedActions = new InputActionListener<>(
-			"Dragged Action");
+			"Mouse Dragged Action");
 	
 	/**
 	 * Create a listener for mouse moved actions.
 	 */
 	private static InputActionListener<MouseEvent> movedActions = new InputActionListener<>(
-			"Moved Action");
+			"Mouse Moved Action");
 	
 	/**
 	 * Create a listener for mouse release actions.
 	 */
 	private static InputActionListener<MouseEvent> releasedActions = new InputActionListener<>(
-			"Released Action");
+			"Mouse Released Action");
 
+	/**
+	 * Create a listener for mouse release actions.
+	 */
+	private static InputActionListener<MouseEvent> mouseEnteredActions = new InputActionListener<>(
+			"Mouse Entered Action");
+	
+	/**
+	 * Create a listener for mouse release actions.
+	 */
+	private static InputActionListener<MouseEvent> mouseExitedActions = new InputActionListener<>(
+			"Mouse Exited Action");
+	
 	/**
 	 * Boolean to check if mouse buttons are being held or not.
 	 */
@@ -90,6 +103,16 @@ public class Mouse extends MouseAdapter {
 		releasedActions.process(e);
 		holding = false;
 	}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		mouseEnteredActions.process(e);
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		mouseExitedActions.process(e);
+	}
 
 	/**
 	 * @return true/false mouse button is being held.
@@ -131,6 +154,20 @@ public class Mouse extends MouseAdapter {
 	 */
 	public static InputActionListener<MouseEvent> getReleasedActions() {
 		return releasedActions;
+	}
+
+	/**
+	 * @return the input listener for entered actions.
+	 */
+	public static InputActionListener<MouseEvent> getMouseEnteredActions() {
+		return mouseEnteredActions;
+	}
+
+	/**
+	 * @return the input listener for exited actions.
+	 */
+	public static InputActionListener<MouseEvent> getMouseExitedActions() {
+		return mouseExitedActions;
 	}
 
 }

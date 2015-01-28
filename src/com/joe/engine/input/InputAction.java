@@ -1,8 +1,8 @@
 package com.joe.engine.input;
 
-import java.awt.event.InputEvent;
+import java.awt.event.ComponentEvent;
 
-public abstract class InputAction<T extends InputEvent> {
+public abstract class InputAction<T extends ComponentEvent> {
 
 	/**
 	 * Perform the action created by this object.
