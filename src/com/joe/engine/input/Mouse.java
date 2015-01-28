@@ -2,15 +2,41 @@ package com.joe.engine.input;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public class Mouse extends MouseAdapter {
+	/**
+	 * Create a listener for mouse clicked actions.
+	 */
+	private static InputActionListener<MouseEvent> clickedActions = new InputActionListener<>(
+			"Clicked Action");
+	
+	/**
+	 * Create a listener for mouse pressed actions.
+	 */
+	private static InputActionListener<MouseEvent> pressedActions = new InputActionListener<>(
+			"Pressed Action");
+	
+	/**
+	 * Create a listener for mouse dragged actions.
+	 */
+	private static InputActionListener<MouseEvent> draggedActions = new InputActionListener<>(
+			"Dragged Action");
+	
+	/**
+	 * Create a listener for mouse moved actions.
+	 */
+	private static InputActionListener<MouseEvent> movedActions = new InputActionListener<>(
+			"Moved Action");
+	
+	/**
+	 * Create a listener for mouse release actions.
+	 */
+	private static InputActionListener<MouseEvent> releasedActions = new InputActionListener<>(
+			"Released Action");
 
-	private static ArrayList<InputAction<MouseEvent>> clickedActions = new ArrayList<>();
-	private static ArrayList<InputAction<MouseEvent>> pressedActions = new ArrayList<>();
-	private static ArrayList<InputAction<MouseEvent>> draggedActions = new ArrayList<>();
-	private static ArrayList<InputAction<MouseEvent>> movedActions = new ArrayList<>();
-	private static ArrayList<InputAction<MouseEvent>> releasedActions = new ArrayList<>();
+	/**
+	 * Boolean to check if mouse buttons are being held or not.
+	 */
 	private static boolean holding;
 
 	/*
@@ -20,7 +46,7 @@ public class Mouse extends MouseAdapter {
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		processAction(e, getClickedActions());
+		clickedActions.process(e);
 	}
 
 	/*
@@ -30,7 +56,7 @@ public class Mouse extends MouseAdapter {
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		processAction(e, getPressedActions());
+		pressedActions.process(e);
 		holding = true;
 	}
 
@@ -41,7 +67,7 @@ public class Mouse extends MouseAdapter {
 	 */
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		processAction(e, getDraggedActions());
+		draggedActions.process(e);
 	}
 
 	/*
@@ -51,7 +77,7 @@ public class Mouse extends MouseAdapter {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		processAction(e, getMovedActions());
+		movedActions.process(e);
 	}
 
 	/*
@@ -61,118 +87,49 @@ public class Mouse extends MouseAdapter {
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		processAction(e, getReleasedActions());
-
+		releasedActions.process(e);
 		holding = false;
 	}
 
 	/**
-	 * Processes the mouse event.
-	 * 
-	 * @param e
-	 *            MouseEvent used by Mouse Adapter.
-	 * 
-	 * @param actions
-	 *            Actions to be used for the MouseEvent.
+	 * @return true/false mouse button is being held.
 	 */
-	private void processAction(MouseEvent e,
-			ArrayList<InputAction<MouseEvent>> actions) {
-
-		ArrayList<InputAction<MouseEvent>> temp = new ArrayList<>(actions);
-
-		synchronized(temp) {
-			for (InputAction<MouseEvent> m : temp) {
-				m.actionPerformed(e);
-			}
-		}
-	}
-
-	/**
-	 * Registers a mouse clicked action.
-	 * 
-	 * @param action
-	 *            Action used when mouse clicked.
-	 */
-	public static synchronized void addClickedAction(
-			InputAction<MouseEvent> action) {
-		synchronized (getClickedActions()) {
-			getClickedActions().add(action);
-		}
-	}
-
-	/**
-	 * Registers a mouse pressed action.
-	 * 
-	 * @param action
-	 *            Action used when mouse pressed.
-	 */
-	public static synchronized void addPressedAction(
-			InputAction<MouseEvent> action) {
-		synchronized (getPressedActions()) {
-			getPressedActions().add(action);
-		}
-	}
-
-	/**
-	 * Registers a mouse dragged action.
-	 * 
-	 * @param action
-	 *            Action used when mouse dragged.
-	 */
-	public static synchronized void addDraggedAction(
-			InputAction<MouseEvent> action) {
-		synchronized (getDraggedActions()) {
-			getDraggedActions().add(action);
-		}
-	}
-
-	/**
-	 * Registers a mouse moved action.
-	 * 
-	 * @param action
-	 *            Action used when mouse moved.
-	 */
-	public static synchronized void addMovedAction(
-			InputAction<MouseEvent> action) {
-		synchronized (getMovedActions()) {
-			getMovedActions().add(action);
-		}
-	}
-
-	/**
-	 * Registers a mouse released action.
-	 * 
-	 * @param action
-	 *            Action used when mouse released.
-	 */
-	public static synchronized void addReleasedAction(
-			InputAction<MouseEvent> action) {
-		synchronized (getReleasedActions()) {
-			getReleasedActions().add(action);
-		}
-	}
-
 	public static boolean isHolding() {
 		return holding;
 	}
 
-	public static ArrayList<InputAction<MouseEvent>> getClickedActions() {
+	/**
+	 * @return the input listener for clicked actions.
+	 */
+	public static InputActionListener<MouseEvent> getClickedActions() {
 		return clickedActions;
 	}
 
-	public static ArrayList<InputAction<MouseEvent>> getDraggedActions() {
+	/**
+	 * @return the input listener for dragged actions.
+	 */
+	public static InputActionListener<MouseEvent> getDraggedActions() {
 		return draggedActions;
 	}
 
-	public static ArrayList<InputAction<MouseEvent>> getMovedActions() {
+	/**
+	 * @return the input listener for moved actions.
+	 */
+	public static InputActionListener<MouseEvent> getMovedActions() {
 		return movedActions;
 	}
 
-	public static ArrayList<InputAction<MouseEvent>> getPressedActions() {
+	/**
+	 * @return the input listener for pressed actions.
+	 */
+	public static InputActionListener<MouseEvent> getPressedActions() {
 		return pressedActions;
 	}
 
-	public static ArrayList<InputAction<MouseEvent>> getReleasedActions() {
+	/**
+	 * @return the input listener for released actions.
+	 */
+	public static InputActionListener<MouseEvent> getReleasedActions() {
 		return releasedActions;
 	}
 

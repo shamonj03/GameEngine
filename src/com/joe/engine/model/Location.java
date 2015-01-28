@@ -2,8 +2,19 @@ package com.joe.engine.model;
 
 public class Location {
 
+	/**
+	 * X location
+	 */
 	private float x;
+	
+	/**
+	 * Y location.
+	 */
 	private float y;
+	
+	/**
+	 * Z location sometimes height/depth.
+	 */
 	private int z;
 
 	/**
