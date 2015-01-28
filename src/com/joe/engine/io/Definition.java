@@ -1,92 +1,57 @@
 package com.joe.engine.io;
 
-import java.io.IOException;
 import java.util.HashMap;
 
-public abstract class Definition<T extends Data> {
-
+public abstract class Definition<K, V extends Data> {
 	/**
 	 * Generic list of items contained in the definition
 	 * 
-	 * @Key Definition id
+	 * @Key Definition hash
 	 * 
 	 * @Value Definition data
 	 */
-	private HashMap<Integer, T> data = new HashMap<Integer, T>();
-	
-	
-	/**
-	 * Create a new definition.
-	 * 
-	 * @param path
-	 * 	The location to the definition data.
-	 */
-	public Definition(String path) {
-		try {
-			load(path);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	private HashMap<K, V> data = new HashMap<K, V>();
 
-	/**
-	 * Parsing information from the file is handled here.
-	 * 
-	 * @param line
-	 *            The current line the buffered reader is on.
-	 */
-	public abstract void parse(String line);
-
-	/**
-	 * Loads the definition folder
-	 * 
-	 * @param path
-	 *            The path to the definition folder.
-	 * @throws IOException 
-	 */
-	public abstract void load(String path) throws IOException;
-	
 	/**
 	 * Gets the generic list of definitions stored in list.
 	 * 
-	 * @Key - Definition item id
+	 * @Key - Definition hash
 	 * 
-	 * @Value - Definition item instance
+	 * @Value - Definition instance
 	 * 
-	 * @return list List of items in definition.
+	 * @return list List of elements in definition.
 	 */
-	public HashMap<Integer, T> getData() {
+	public HashMap<K, V> getData() {
 		return data;
-	}
-	
-	/**
-	 * Set the value for id.
-	 * 
-	 * @param id
-	 * 		Id to be stored in definition.
-	 * @param value
-	 * 		Any information pertaining to that id.
-	 */
-	public void set(Integer id, T value) {
-		data.put(id, value);
 	}
 
 	/**
-	 * Gets a instance from the definition for id
+	 * Set the value for id.
 	 * 
-	 * @param id
-	 *            Id of definition item.
-	 * 
-	 * @return data for he id.
+	 * @param hash
+	 *            Hash used to retrieve from definition.
+	 * @param value
+	 *            Any information pertaining to that id.
 	 */
-	public T forId(int id) {
-		if (id >= size()) {
-				System.err.println(super.getClass().getSimpleName() + "(ID: "
-						+ id + " out of definition bounds, max ID "
-						+ (size() - 1) + ")");
+	public void set(K hash, V value) {
+		data.put(hash, value);
+	}
+
+	/**
+	 * Gets a element from the definition for its hash
+	 * 
+	 * @param hash
+	 *            Hash of definition item.
+	 * 
+	 * @return data for the hash.
+	 */
+	public V retrive(K hash) {
+		if (!data.containsKey(hash)) {
+			System.err.println(super.getClass().getSimpleName() + "(Hash: "
+					+ hash + "not found " + (size() - 1) + ")");
 			return data.get(0);
 		}
-		return data.get(id);
+		return data.get(hash);
 	}
 
 	/**
