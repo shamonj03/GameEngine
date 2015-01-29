@@ -1,5 +1,10 @@
 package com.joe.engine.io;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Definition<K, V extends Data> {
@@ -11,30 +16,33 @@ public abstract class Definition<K, V extends Data> {
 	 * @Value Definition data
 	 */
 	private HashMap<K, V> data = new HashMap<K, V>();
-
+	
 	/**
-	 * Gets the generic list of definitions stored in list.
+	 * Read the contents of the file line by line and
+	 * stores each line in an array list.
 	 * 
-	 * @Key - Definition hash
+	 * @param file
+	 * 		The file to read.
 	 * 
-	 * @Value - Definition instance
+	 * @return The lines contained in the file.
 	 * 
-	 * @return list List of elements in definition.
+	 * @throws IOException
 	 */
-	public HashMap<K, V> getData() {
-		return data;
-	}
-
-	/**
-	 * Set the value for id.
-	 * 
-	 * @param hash
-	 *            Hash used to retrieve from definition.
-	 * @param value
-	 *            Any information pertaining to that id.
-	 */
-	public void set(K hash, V value) {
-		data.put(hash, value);
+	public ArrayList<String> readFile(File file) throws IOException {
+		ArrayList<String> lines = new ArrayList<>();
+		
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		
+		String line = "";
+		
+		while((line = reader.readLine()) != null) {
+			if(line.startsWith("//")) {
+				continue;
+			}
+			lines.add(line);
+		}
+		reader.close();
+		return lines;
 	}
 
 	/**
@@ -47,11 +55,35 @@ public abstract class Definition<K, V extends Data> {
 	 */
 	public V retrive(K hash) {
 		if (!data.containsKey(hash)) {
-			System.err.println(super.getClass().getSimpleName() + "(Hash: "
-					+ hash + "not found " + (size() - 1) + ")");
+			System.err.println(super.getClass().getSimpleName() + ": could not find item " + hash + " in definition.");
 			return data.get(0);
 		}
 		return data.get(hash);
+	}
+
+	/**
+	 * Set the value for id.
+	 * 
+	 * @param hash
+	 *            Hash used to retrieve from definition.
+	 * @param value
+	 *            Any information pertaining to that id.
+	 */
+	public void create(K hash, V value) {
+		data.put(hash, value);
+	}
+	
+	/**
+	 * Gets the generic list of definitions stored in list.
+	 * 
+	 * @Key - Definition hash
+	 * 
+	 * @Value - Definition instance
+	 * 
+	 * @return list List of elements in definition.
+	 */
+	public HashMap<K, V> getData() {
+		return data;
 	}
 
 	/**

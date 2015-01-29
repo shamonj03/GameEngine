@@ -27,12 +27,13 @@ public class RGB16BitInteger implements Color {
 	public static final int OLIVE = 0x808000;
 	public static final int LIME = 0x00FF00;
 	public static final int GREEN = 0x008000;
-	public static final int AQUA = 0x00FFFF;
+	public static final int CYAN = 0x00FFFF;
 	public static final int TEAL = 0x008080;
 	public static final int BLUE = 0x0000FF;
 	public static final int NAVY = 0x000080;
 	public static final int FUCHSIA = 0xFF00FF;
 	public static final int PURPLE = 0x800080;
+	public static final int ORANGE = 0xFFA500;
 
 	/**
 	 * Compresses individual RGB into an single RGB integer.
@@ -60,9 +61,9 @@ public class RGB16BitInteger implements Color {
 	public static int[] unpackRGB(int RGB) {
 		int[] rgbArray = new int[3];
 		
-		int red = ((RGB >> 16) & 0xFF);
-		int green = ((RGB >> 8) & 0xFF);
-		int blue = (RGB & 0xFF);
+		int red = getRed(RGB);
+		int green = getGreen(RGB);
+		int blue = getBlue(RGB);
 
 		rgbArray[0] = red;
 		rgbArray[1] = green;
@@ -135,20 +136,20 @@ public class RGB16BitInteger implements Color {
 	 * Returns the Red component from a RGB integer.
 	 */
 	public static int getRed(int RGB) {
-		return unpackRGB(RGB)[0];
+		return (RGB >> 16) & 0xFF;
 	}
 
 	/**
 	 * Returns the Green component from a RGB integer.
 	 */
 	public static int getGreen(int RGB) {
-		return unpackRGB(RGB)[1];
+		return (RGB >> 8) & 0xFF;
 	}
 
 	/**
 	 * Returns the Blue component from a RGB integer.
 	 */
 	public static int getBlue(int RGB) {
-		return unpackRGB(RGB)[2];
+		return RGB & 0xFF;
 	}
 }

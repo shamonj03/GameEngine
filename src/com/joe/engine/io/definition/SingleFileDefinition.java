@@ -1,10 +1,9 @@
 package com.joe.engine.io.definition;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.joe.engine.io.Data;
 import com.joe.engine.io.Definition;
@@ -18,7 +17,7 @@ public abstract class SingleFileDefinition<K, V extends Data> extends Definition
 	 */
 	public SingleFileDefinition(String path) {
 		try {
-			load(path);
+			readData(path);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,25 +39,18 @@ public abstract class SingleFileDefinition<K, V extends Data> extends Definition
 	 *            
 	 * @throws IOException 
 	 */
-	public void load(String path) throws IOException {
+	public void readData(String path) throws IOException {
 		File file = new File(path);
 
 		if (!file.exists()) {
-			throw new FileNotFoundException("No " + this.getClass().getSimpleName() + " found at "
+			throw new FileNotFoundException(this.getClass().getSimpleName() + " could not find "
 					+ path);
 		}
 
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-
-		String line = "";
-
-		while ((line = reader.readLine()) != null) {
-			if (line.startsWith("//")) {
-				continue;
-			}
-
+		ArrayList<String> lines = readFile(file);
+		
+		for(String line : lines) {
 			parse(line);
 		}
-		reader.close();
 	}
 }

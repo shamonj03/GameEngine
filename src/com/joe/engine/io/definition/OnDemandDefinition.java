@@ -3,37 +3,52 @@ package com.joe.engine.io.definition;
 import java.io.IOException;
 
 import com.joe.engine.io.Data;
+import com.joe.engine.io.Definition;
 
-public abstract class OnDemandDefinition<K, V extends Data> extends MassDefinition<K, V> {
-	
+public abstract class OnDemandDefinition<K, V extends Data> extends Definition<K, V> {
+	/**
+	 * The folder the definition is located.
+	 */
+	protected String definitionFolder;
+
 	/**
 	 * Creates a new definition where the key in the data map is the numeric
-	 * value of the file name. This type of definition only loads data
-	 * when it is called and then caches it for later.
+	 * value of the file name. This type of definition loads data only when
+	 * it is called and it is not cached.
 	 * 
 	 * @param definitionFolder
 	 *            The folder the definition is located.
 	 * @param fileExtension
 	 *            The extension files in this definition use.
 	 */
-	public OnDemandDefinition(String definitionFolder,
-			String fileExtension) {
-		super(definitionFolder, fileExtension);
+	public OnDemandDefinition(String definitionFolder) {
+		this.definitionFolder = definitionFolder;
 	}
 
+	/**
+	 * Load a new block of data.
+	 * 
+	 * @param hash
+	 *            The hash of the data in the definition.
+	 * 
+	 * @throws IOException
+	 */
+	public abstract void readData(K hash) throws IOException;
+
+
 	@Override
-	public V retrive(K id) {
-		if (!getData().containsKey(id)) {
-			System.out.println(super.getClass().getSimpleName() + ": " + id + " not loaded attempting to retrive.");
+	public V retrive(K hash) {
+		if (!getData().containsKey(hash)) {
+			System.out.println(super.getClass().getSimpleName() + ": " + hash + " not loaded attempting to retrive.");
 			try {
-				load(id);
+				readData(hash);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println(super.getClass().getSimpleName() + ": Successfully cached " + id + ".");
+			System.out.println(super.getClass().getSimpleName() + ": Successfully cached " + hash + ".");
 		} else {
-			System.out.println(super.getClass().getSimpleName() + ": Successfully retrived " + id + ".");
+			System.out.println(super.getClass().getSimpleName() + ": Successfully retrived " + hash + ".");
 		}
-		return super.retrive(id);
+		return super.retrive(hash);
 	}
 }

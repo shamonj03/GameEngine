@@ -38,7 +38,7 @@ public class RGBA24BitInteger implements Color {
 	public static int[] unpackRGBA(int RGBA) {
 		int[] rgbArray = new int[4];
 		
-		int alpha = ((RGBA >> 24) & 0xFF);
+		int alpha = getAlpha(RGBA);
 		
 		int[] RGB = RGB16BitInteger.unpackRGB(RGBA);
 
@@ -128,27 +128,27 @@ public class RGBA24BitInteger implements Color {
 	 * Returns the Red component from a RGBA integer.
 	 */
 	public static int getRed(int RGBA) {
-		return unpackRGBA(RGBA)[0];
+		return (RGBA >> 16) & 0xFF;
 	}
 
 	/**
 	 * Returns the Green component from a RGBA integer.
 	 */
 	public static int getGreen(int RGBA) {
-		return unpackRGBA(RGBA)[1];
+		return (RGBA >> 8) & 0xFF;
 	}
 
 	/**
 	 * Returns the Blue component from a RGBA integer.
 	 */
 	public static int getBlue(int RGBA) {
-		return unpackRGBA(RGBA)[2];
+		return RGBA & 0xFF;
 	}
 	
 	/**
 	 * Returns the alpha component from the RGBA integer.
 	 */
-	public static int getAlpga(int RGBA) {
-		return unpackRGBA(RGBA)[2];
+	public static int getAlpha(int RGBA) {
+		return (RGBA >> 24) & 0xFF;
 	}
 }
