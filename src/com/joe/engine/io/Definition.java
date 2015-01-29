@@ -2,6 +2,7 @@ package com.joe.engine.io;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +17,16 @@ public abstract class Definition<K, V extends Data> {
 	 * @Value Definition data
 	 */
 	private HashMap<K, V> data = new HashMap<K, V>();
+
+	/**
+	 * Load a new block of data.
+	 * 
+	 * @param hash
+	 *            The hash of the data in the definition.
+	 * 
+	 * @throws IOException
+	 */
+	public abstract V readData(K hash) throws IOException;
 	
 	/**
 	 * Read the contents of the file line by line and
@@ -29,6 +40,10 @@ public abstract class Definition<K, V extends Data> {
 	 * @throws IOException
 	 */
 	public ArrayList<String> readFile(File file) throws IOException {
+		if(!file.exists()) {
+			throw new FileNotFoundException(this.getClass().getSimpleName() + ": cannot find " + file.getPath() + ".");
+		}
+		
 		ArrayList<String> lines = new ArrayList<>();
 		
 		BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -69,7 +84,7 @@ public abstract class Definition<K, V extends Data> {
 	 * @param value
 	 *            Any information pertaining to that id.
 	 */
-	public void create(K hash, V value) {
+	public void put(K hash, V value) {
 		data.put(hash, value);
 	}
 	

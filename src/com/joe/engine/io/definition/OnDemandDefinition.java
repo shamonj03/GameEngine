@@ -25,23 +25,13 @@ public abstract class OnDemandDefinition<K, V extends Data> extends Definition<K
 		this.definitionFolder = definitionFolder;
 	}
 
-	/**
-	 * Load a new block of data.
-	 * 
-	 * @param hash
-	 *            The hash of the data in the definition.
-	 * 
-	 * @throws IOException
-	 */
-	public abstract void readData(K hash) throws IOException;
-
 
 	@Override
 	public V retrive(K hash) {
 		if (!getData().containsKey(hash)) {
 			System.out.println(super.getClass().getSimpleName() + ": " + hash + " not loaded attempting to retrive.");
 			try {
-				readData(hash);
+				put(hash, readData(hash));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
