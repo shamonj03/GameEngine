@@ -105,14 +105,14 @@ public class Camera {
 	 * 
 	 * @param screen
 	 *            The screen to draw to.
-	 * @param target
+	 * @param targetX
 	 *            Target location.
 	 * @param xOffset
 	 *            Width of the target.
 	 * @return The position on the screen.
 	 */
-	public int getPositionXOnScreen(Screen screen, int target) {
-		return (int) (target - (location.getX() - (screen.getWidth() - getOffsetX()) / 2));
+	public int getPositionXOnScreen(Screen screen, int targetX) {
+		return (int) (targetX - (location.getX() - (screen.getWidth() - getOffsetX()) / 2));
 	}
 
 	/**
@@ -120,14 +120,14 @@ public class Camera {
 	 * 
 	 * @param screen
 	 *            The screen to draw to.
-	 * @param target
+	 * @param targetY
 	 *            Target location.
 	 * @param width
 	 *            Width of the target.
 	 * @return The position on the screen.
 	 */
-	public int getPositionYOnScreen(Screen screen, int target) {
-		return (int) (target - (location.getY() - (screen.getHeight() - getOffsetY()) / 2));
+	public int getPositionYOnScreen(Screen screen, int targetY) {
+		return (int) (targetY - (location.getY() - (screen.getHeight() - getOffsetY()) / 2));
 	}
 
 	/**
