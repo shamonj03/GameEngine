@@ -7,41 +7,73 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+
 import com.joe.engine.graphics.renderable.Screen;
 import com.joe.engine.input.Keyboard;
 import com.joe.engine.input.Mouse;
-import com.joe.engine.util.EngineConstants;
+import com.joe.engine.io.settings.EngineSettings;
 
 @SuppressWarnings("serial")
 public abstract class EngineCanvas extends Canvas {
+	/**
+	 * Default engine settings.
+	 */
+	private static final EngineSettings settings = new EngineSettings();
+	
+	/**
+	 * Create a mouseListener.
+	 */
+	private static final Mouse mouseListener = new Mouse();
 
-	private final Mouse mouseListener = new Mouse();
-	private final Keyboard keyListener = new Keyboard();
+	/**
+	 * Create a keyListener.
+	 */
+	private static final Keyboard keyListener = new Keyboard();
 
+	/**
+	 * The screen to display to.
+	 */
 	private Screen screen;
+
+	/**
+	 * The back image of the canvas for double buffering.
+	 */
 	private BufferedImage screenImage;
+
+	/**
+	 * The pixels of the canvas.
+	 */
 	private int[] pixels;
 
+	/**
+	 * Turn off/on the main loop.
+	 */
 	private boolean running = true;
+
+	/**
+	 * Pause updating.
+	 */
 	private boolean paused = false;
 
-	private boolean showFps = true;
-
+	/**
+	 * The difference in time between frames.
+	 */
 	private float interpolation;
 
+	/**
+	 * The buffer strategy used by this component.
+	 */
 	private BufferStrategy buffer;
 
-	private int displayedUpdates = 60;
-	private int displayedFps = 60;
-	
-	private double targetFps = EngineConstants.FRAME_RATE_UNLIMITED;
-
-	/*
-	 * Set hardware accelerated graphics setting before startup.
+	/**
+	 * The displayed Updates to draw.
 	 */
-	static {
-		System.setProperty("sun.java2d.opengl", "true");
-	}
+	private int displayedUpdates = 60;
+
+	/**
+	 * The displayed FPS to draw.
+	 */
+	private int displayedFps = 60;
 
 	/**
 	 * Creates a new canvas to draw two that has mouse and keyboard actions
@@ -71,12 +103,14 @@ public abstract class EngineCanvas extends Canvas {
 				BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) screenImage.getRaster().getDataBuffer())
 				.getData();
+		
+		settings.load();
 	}
 
 	/**
 	 * Things to do before the game starts up goes here.
 	 */
-	public abstract void startUp();
+	public abstract void onStartUp();
 
 	/**
 	 * All game logic such as moving collision detection physic etc are handled
@@ -118,17 +152,22 @@ public abstract class EngineCanvas extends Canvas {
 		drawScreen(screen);
 
 		System.arraycopy(screen.getPixels(), 0, pixels, 0, pixels.length);
-		
+
 		g.drawImage(screenImage, 0, 0, getWidth(), getHeight(), this);
 
-		if (showFps) {
+		if (settings.isShowingFPS()) {
 			g.setColor(Color.ORANGE);
-			g.drawString("(FPS: " + displayedFps + " Updates: " + displayedUpdates + ")", 15, 15);
+			g.drawString("(FPS: " + displayedFps + " Updates: "
+					+ displayedUpdates + ")", 15, 15);
 		}
 	}
 
+	/**
+	 * Set up the buffere strategy and amount of
+	 * layers to use for page flipping.
+	 */
 	private void createBufferStrategy() {
-		createBufferStrategy(EngineConstants.BUFFER_STRATEGY_LAYERS);
+		createBufferStrategy(settings.getBufferStrategyLayers());
 		buffer = getBufferStrategy();
 	}
 
@@ -137,7 +176,7 @@ public abstract class EngineCanvas extends Canvas {
 	 */
 	public void start() {
 		createBufferStrategy();
-		startUp();
+		onStartUp();
 		Thread loop = new Thread() {
 			public void run() {
 				gameLoop();
@@ -147,11 +186,10 @@ public abstract class EngineCanvas extends Canvas {
 	}
 
 	/**
-	 * @author Eli Delventhal
-	 * {@link http://www.java-gaming.org/index.php?topic=24220.0}
+	 * @author Eli Delventhal {@link http
+	 *         ://www.java-gaming.org/index.php?topic=24220.0}
 	 * 
-	 * I prefer this loop over chernos. Chernos seemed very
-	 * basic.
+	 *         I prefer this loop over chernos. Chernos seemed very basic.
 	 */
 	private void gameLoop() {
 		// This value would probably be stored elsewhere.
@@ -170,14 +208,14 @@ public abstract class EngineCanvas extends Canvas {
 		double lastRenderTime = System.nanoTime();
 
 		// If we are able to get as high as this FPS, don't render again.
-		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / getTargetFps();
+		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / settings.getTargetFPS();
 
 		// Simple way of finding FPS.
 		int lastSecondTime = (int) (lastUpdateTime / 1000000000);
 
 		int upz = 0;
 		int frameCount = 0;
-		
+
 		while (running) {
 			double now = System.nanoTime();
 			int updateCount = 0;
@@ -188,7 +226,7 @@ public abstract class EngineCanvas extends Canvas {
 				while (now - lastUpdateTime > TIME_BETWEEN_UPDATES
 						&& updateCount < MAX_UPDATES_BEFORE_RENDER) {
 					updateGame();
-					
+
 					lastUpdateTime += TIME_BETWEEN_UPDATES;
 					updateCount++;
 					upz++;
@@ -208,7 +246,8 @@ public abstract class EngineCanvas extends Canvas {
 						.min(1.0f,
 								(float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES));
 
-				setInterpolation(interpolation);
+				this.interpolation = interpolation;
+				
 				processGraphics();
 				lastRenderTime = now;
 				frameCount++;
@@ -245,32 +284,24 @@ public abstract class EngineCanvas extends Canvas {
 			}
 		}
 	}
-
-	public void setInterpolation(float interpolation) {
-		this.interpolation = interpolation;
-	}
-
+	/**
+	 * @return the current interpolation between frames.
+	 */
 	public float getInterpolation() {
 		return interpolation;
 	}
 
-	public void setShowFps(boolean showFps) {
-		this.showFps = showFps;
-	}
-
-	public boolean isShowFps() {
-		return showFps;
-	}
-
+	/**
+	 * @return the screen to display to.
+	 */
 	public Screen getScreen() {
 		return screen;
 	}
 	
-	public void setTargetFps(double targetFps) {
-		this.targetFps = targetFps;
-	}
-	
-	public double getTargetFps() {
-		return targetFps;
+	/**
+	 * @return the settings.
+	 */
+	public static EngineSettings getSettings() {
+		return settings;
 	}
 }

@@ -2,6 +2,7 @@ package com.joe.engine.graphics.renderable;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -26,7 +27,7 @@ public class Sprite extends Renderable {
 				getImage().getRGB(0, 0, getWidth(), getHeight(), pixels, 0,
 						getWidth());
 			} else {
-				System.out.println("Sprite not found: " + file.getPath());
+				throw new FileNotFoundException("Sprite not found: " + file.getPath());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

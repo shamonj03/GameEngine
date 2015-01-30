@@ -1,6 +1,6 @@
 package com.joe.engine.graphics.renderable;
 
-import com.joe.engine.graphics.Font;
+import com.joe.engine.graphics.EngineFont;
 import com.joe.engine.graphics.Renderable;
 
 public class Screen extends Renderable {
@@ -279,15 +279,16 @@ public class Screen extends Renderable {
 	 * @param y
 	 *            Y Position on renderable.
 	 */
-	public void drawString(String text, int RGB, int x, int y) {
+	public void drawString(String text, EngineFont font, int RGB, int x, int y) {
 		char[] charArray = text.toCharArray();
 
 		int x_off = 0;
 		int y_off = 0;
 
+		
 		for (int i = 0; i < charArray.length; i++) {
 			char c = charArray[i];
-			Sprite char_sprite = Font.getCharacter(c);
+			Sprite char_sprite = font.getCharacter(c);
 
 			/*
 			 * New Line padding.
@@ -303,7 +304,7 @@ public class Screen extends Renderable {
 			/*
 			 * Padding right.
 			 */
-			if (c == '?') {
+			if (c == '!' || c == '?') {
 				x_off += 2;
 			}
 
