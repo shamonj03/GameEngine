@@ -1,6 +1,6 @@
 package com.joe.engine.model;
 
-import com.joe.engine.graphics.renderable.Screen;
+import com.joe.engine.graphics.renderable.DrawingArea;
 import com.joe.engine.util.Util;
 
 public abstract class Entity {
@@ -18,7 +18,7 @@ public abstract class Entity {
 	 * @param screen
 	 *            Screen to draw to.
 	 */
-	public abstract void draw(Screen screen);
+	public abstract void draw(DrawingArea screen);
 
 	/**
 	 * Sets the entities location.

@@ -38,7 +38,7 @@ public class EngineSettings extends Settings {
 	public void setDefaultProperties(Properties properties) {
 		properties.setProperty("targetFPS", "60");
 		properties.setProperty("bufferStrategyLayers", "2");
-		properties.setProperty("showFPS", "false");
+		properties.setProperty("showFPS", "true");
 		properties.setProperty("debugging", "false");
 	}
 

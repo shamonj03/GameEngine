@@ -6,24 +6,24 @@ import com.joe.engine.graphics.renderable.Sprite;
 import com.joe.engine.graphics.renderable.sprite.SpriteSheet;
 import com.joe.engine.util.EngineConstants;
 
-public abstract class EngineFont {
-	
-	/*
+public abstract class CustomFont {
+	/**
 	 * Sprite sheet used for the font.
 	 */
 	public SpriteSheet fontSheet;
 
-	/*
+	/**
 	 * Map containing the sprite for 
 	 * respective character.
 	 */
 	private HashMap<Character, Sprite> characterMap = new HashMap<>();
+	
 	/**
 	 * Creates a new font.
 	 * 
 	 * @param fonSheet
 	 */
-	public EngineFont(SpriteSheet fonSheet) {
+	public CustomFont(SpriteSheet fonSheet) {
 		this.fontSheet = fonSheet;
 		this.initializeCharacters();
 	}

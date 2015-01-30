@@ -8,7 +8,7 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 
-import com.joe.engine.graphics.renderable.Screen;
+import com.joe.engine.graphics.renderable.DrawingArea;
 import com.joe.engine.input.Keyboard;
 import com.joe.engine.input.Mouse;
 import com.joe.engine.io.settings.EngineSettings;
@@ -33,7 +33,7 @@ public abstract class EngineCanvas extends Canvas {
 	/**
 	 * The screen to display to.
 	 */
-	private Screen screen;
+	private DrawingArea screen;
 
 	/**
 	 * The back image of the canvas for double buffering.
@@ -97,14 +97,14 @@ public abstract class EngineCanvas extends Canvas {
 		this.addKeyListener(keyListener);
 		this.setIgnoreRepaint(true);
 
-		screen = new Screen(width, height);
+		settings.load();
+	
+		screen = new DrawingArea(width, height);
 
 		screenImage = new BufferedImage(width, height,
 				BufferedImage.TYPE_INT_RGB);
 		pixels = ((DataBufferInt) screenImage.getRaster().getDataBuffer())
 				.getData();
-		
-		settings.load();
 	}
 
 	/**
@@ -121,7 +121,7 @@ public abstract class EngineCanvas extends Canvas {
 	/**
 	 * Anything the game is going to draw is handled in here.
 	 */
-	public abstract void drawScreen(Screen screen);
+	public abstract void drawScreen(DrawingArea screen);
 
 	/**
 	 * Uses a bufferer strategy 3 layers deep for screen flipping. Similar to
@@ -153,7 +153,7 @@ public abstract class EngineCanvas extends Canvas {
 
 		System.arraycopy(screen.getPixels(), 0, pixels, 0, pixels.length);
 
-		g.drawImage(screenImage, 0, 0, getWidth(), getHeight(), this);
+		g.drawImage(screenImage, 0, 0, this);
 
 		if (settings.isShowingFPS()) {
 			g.setColor(Color.ORANGE);
@@ -294,7 +294,7 @@ public abstract class EngineCanvas extends Canvas {
 	/**
 	 * @return the screen to display to.
 	 */
-	public Screen getScreen() {
+	public DrawingArea getScreen() {
 		return screen;
 	}
 	

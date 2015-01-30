@@ -1,9 +1,9 @@
 package com.joe.engine.graphics.renderable;
 
-import com.joe.engine.graphics.EngineFont;
+import com.joe.engine.graphics.CustomFont;
 import com.joe.engine.graphics.Renderable;
 
-public class Screen extends Renderable {
+public class DrawingArea extends Renderable {
 	
 	/**
 	 * Creates a new screen to draw to.
@@ -12,8 +12,12 @@ public class Screen extends Renderable {
 	 * 		
 	 * @param height
 	 */
-	public Screen(int width, int height) {
+	public DrawingArea(int width, int height) {
 		this.initialize(width, height);
+	}
+	
+	public DrawingArea(int x, int y, int width, int height) {
+		this.initialize(x, y, width, height);
 	}
 
 	/**
@@ -164,6 +168,7 @@ public class Screen extends Renderable {
 			drawPixel(RGB, startX, y);
 			drawPixel(RGB, startX + width, y);
 		}
+		
 	}
 
 	/**
@@ -213,9 +218,9 @@ public class Screen extends Renderable {
 	}
 
 	/**
-	 * Draws a sprite.
+	 * Draws a renderable inside of the drawing area.
 	 * 
-	 * @param sprite
+	 * @param area
 	 *            Sprite to be drawn.
 	 * 
 	 * @param x
@@ -224,23 +229,22 @@ public class Screen extends Renderable {
 	 * @param y
 	 *            Y position on renderable.
 	 */
-	public void drawSprite(Sprite sprite, int x, int y) {
+	public void drawRenderable(Renderable area) {
 		// Kinda slow
-		for (short y_off = 0; y_off < sprite.getHeight(); y_off++) {
-			for (short x_off = 0; x_off < sprite.getWidth(); x_off++) {
-				int rgb = sprite.getPixels()[x_off 
-						+ (y_off * sprite.getWidth())];
+		for (short y_off = 0; y_off < area.getHeight(); y_off++) {
+			for (short x_off = 0; x_off < area.getWidth(); x_off++) {
+				int rgb = area.getPixels()[x_off + (y_off * area.getWidth())];
 				if (isTransparentColor(rgb))
 					continue;
-				drawPixel(rgb, (x + x_off), (y + y_off));
+				drawPixel(rgb, (area.getX() + x_off), (area.getY() + y_off));
 			}
 		}
 	}
-
+	
 	/**
 	 * Draws a sprite with a forced RGB.
 	 * 
-	 * @param sprite
+	 * @param renderable
 	 *            Sprite to be drawn.
 	 * 
 	 * @param RGB
@@ -252,11 +256,11 @@ public class Screen extends Renderable {
 	 * @param y
 	 *            Y position on renderable.
 	 */
-	public void drawSprite(Sprite sprite, int RGB, int x, int y) {
-		for (short y_off = 0; y_off < sprite.getHeight(); y_off++) {
-			for (short x_off = 0; x_off < sprite.getWidth(); x_off++) {
-				int color = sprite.getPixels()[x_off
-						+ (y_off * sprite.getWidth())];
+	public void drawRenderable(Renderable renderable, int RGB, int x, int y) {
+		for (short y_off = 0; y_off < renderable.getHeight(); y_off++) {
+			for (short x_off = 0; x_off < renderable.getWidth(); x_off++) {
+				int color = renderable.getPixels()[x_off
+						+ (y_off * renderable.getWidth())];
 				if (isTransparentColor(color))
 					continue;
 				drawPixel(RGB, x + x_off, y + y_off);
@@ -279,7 +283,7 @@ public class Screen extends Renderable {
 	 * @param y
 	 *            Y Position on renderable.
 	 */
-	public void drawString(String text, EngineFont font, int RGB, int x, int y) {
+	public void drawString(String text, CustomFont font, int RGB, int x, int y) {
 		char[] charArray = text.toCharArray();
 
 		int x_off = 0;
@@ -308,7 +312,7 @@ public class Screen extends Renderable {
 				x_off += 2;
 			}
 
-			drawSprite(char_sprite, RGB, x + x_off, y + y_off);
+			drawRenderable(char_sprite, RGB, x + x_off, y + y_off);
 
 			/*
 			 * Padding left.

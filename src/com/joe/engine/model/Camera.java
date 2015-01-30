@@ -1,6 +1,6 @@
 package com.joe.engine.model;
 
-import com.joe.engine.graphics.renderable.Screen;
+import com.joe.engine.graphics.renderable.DrawingArea;
 
 public class Camera {
 
@@ -81,7 +81,7 @@ public class Camera {
 	 *            Width of the target.
 	 * @return The position on the screen.
 	 */
-	public int getPositionXOnScreen(Screen screen, Location target) {
+	public int getPositionXOnScreen(DrawingArea screen, Location target) {
 		return (int) (target.getX() - (location.getX() - (screen.getWidth() - getOffsetX()) / 2));
 	}
 
@@ -96,7 +96,7 @@ public class Camera {
 	 *            Width of the target.
 	 * @return The position on the screen.
 	 */
-	public int getPositionYOnScreen(Screen screen, Location other) {
+	public int getPositionYOnScreen(DrawingArea screen, Location other) {
 		return (int) (other.getY() - (location.getY() - (screen.getHeight() - getOffsetY()) / 2));
 	}
 
@@ -111,7 +111,7 @@ public class Camera {
 	 *            Width of the target.
 	 * @return The position on the screen.
 	 */
-	public int getPositionXOnScreen(Screen screen, int targetX) {
+	public int getPositionXOnScreen(DrawingArea screen, int targetX) {
 		return (int) (targetX - (location.getX() - (screen.getWidth() - getOffsetX()) / 2));
 	}
 
@@ -126,7 +126,7 @@ public class Camera {
 	 *            Width of the target.
 	 * @return The position on the screen.
 	 */
-	public int getPositionYOnScreen(Screen screen, int targetY) {
+	public int getPositionYOnScreen(DrawingArea screen, int targetY) {
 		return (int) (targetY - (location.getY() - (screen.getHeight() - getOffsetY()) / 2));
 	}
 
