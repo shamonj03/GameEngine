@@ -200,6 +200,20 @@ public abstract class Renderable {
 		}
 		return pixels[x + (y * getWidth())];
 	}
+	
+
+	public void setLocation(int x, int y) {
+		this.x = x;
+		this.y = y;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
 
 	/**
 	 * @return width. Width of renderable.
